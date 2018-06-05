@@ -1,0 +1,116 @@
+{% extends 'seedstars/mybase.html' %}
+
+{% block style %}
+    <style>
+
+        .hidden {display: none;}
+        .show{display: block;}
+
+    </style>
+{% endblock %}
+
+
+
+{% block sidebar %}
+
+    <div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="../" class="simple-text">
+                   Seedstars
+                </a>
+            </div>
+
+            <ul class="nav">
+                <li>
+                    <a href="/add/">
+                        <i class="pe-7s-pen"></i>
+                        <p>Create User</p>
+                    </a>
+                </li>
+                <li class='active'>
+                    <a href="/list/">
+                        <i class="pe-7s-note2"></i>
+                        <p>List Users</p>
+                    </a>
+                </li>
+            
+                <li class="active-pro">
+                    <a href="javasscript: void(0)">
+                        <i class="pe-7s-science"></i>
+                        <p>Seedstars</p>
+                        {{request.user.username}}
+                    </a>
+                </li> 
+            </ul>
+        </div>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                
+                                <p class="category">list of Users ({{allUsers.count}})</p>
+                            </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                                 
+                                        <th>FirstName</th>
+                                        <th>Lastname</th>
+                                        <th>Email Address</th>
+                                    </thead> 
+                                                                      
+                                    <tbody>
+                                        {% for user in users %}
+                                            <tr>
+                                                <td>{{user.firstname}}</td>
+                                                <td> {{user.lastname}}</td>      
+                                                <td>{{user.emailadd}}</td>
+                                            </tr>
+                                        {% endfor %}             
+                                    
+                                    </tbody>
+                                </table>
+                                <div class="text-center">
+                                    {% if users.has_other_pages %}
+                                      <ul class="pagination">
+                                        {% if users.has_previous %}
+                                          <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
+                                        {% else %}
+                                          <li class="disabled"><span>&laquo;</span></li>
+                                        {% endif %}
+                                        {% for i in users.paginator.page_range %}
+                                          {% if users.number == i %}
+                                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                                          {% else %}
+                                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                          {% endif %}
+                                        {% endfor %}
+                                        {% if users.has_next %}
+                                          <li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
+                                        {% else %}
+                                          <li class="disabled"><span>&raquo;</span></li>
+                                        {% endif %}
+                                      </ul>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+    </div>
+{% endblock %}
+
+
+{% block script %}
+
+
+{% endblock %}
+

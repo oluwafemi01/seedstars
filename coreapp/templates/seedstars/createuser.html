@@ -1,0 +1,178 @@
+{% extends 'seedstars/mybase.html' %}
+
+{% block style %}
+    
+{% endblock %}
+
+
+{% block sidebar %}
+
+    <div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="../" class="simple-text">
+                   Seedstars
+                </a>
+            </div>
+
+            <ul class="nav">
+                <li class='active'>
+                    <a href="/add/">
+                        <i class="pe-7s-pen"></i>
+                        <p>Create User</p>
+                    </a>
+                </li>
+                <li  >
+                    <a href="/list/">
+                        <i class="pe-7s-note2"></i>
+                        <p>List Users</p>
+                    </a>
+                </li>
+            
+                <li class="active-pro">
+                    <a href="javasscript: void(0)">
+                        <i class="pe-7s-science"></i>
+                        <p>Seedstars</p>
+                        {{request.user.username}}
+                    </a>
+                </li> 
+            </ul>
+        </div>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-md-8">
+
+            {% if form.errors %}
+                <div class='alert alert-danger fade in'>
+                  
+                  <a href='#' class='close' data-dismiss='alert'>&times;</a>
+                  <strong><i class='fa fa-exclamation-triangle' aria-hidden='true'></i></strong>
+
+                  <ul>
+                    {% for field in form %}
+                      {% if field.errors %}
+                        {% for error in field.errors %}
+                          <li>{{ error|escape }}</li>
+                        {% endfor %}
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+                  {% if form.non_field_errors %}
+                    {{ form.non_field_errors }}
+                  {% endif %}
+                </div>
+            {% elif success %}
+                <div class='alert alert-success fade in'>
+                    <a href='#' class='close' data-dismiss='alert'>&times;</a>
+                    <strong><i class='fa fa-check' aria-hidden='true'></i></strong> 
+                    User Created Successfully!!!
+                </div>
+            {% elif error %} 
+                <div class='alert alert-danger fade in'>
+                    <a href='#' class='close' data-dismiss='alert'>&times;</a>
+                    <strong><i class='fa fa-exclamation-triangle' aria-hidden='true'></i></strong>
+                    Error verifying Data!!!
+                </div>
+            {% endif %}
+
+
+           
+            <div class="card">
+                <div class="header">
+                    <h4 class="title"><b>Users</b></h4>
+                    <p class="category">Create Users</p>
+                </div>
+                <div class='content'>
+                    <div id="results"></div>
+                    <form action='' method='post'>
+                    {% csrf_token %}
+                    <div class='row'>
+                        <div class='col-md-5'>
+                            <p>FirstName</p>
+                        </div>
+                        <div class='col-md-7'>
+                            <div class='form-group'>
+                                <input type='text' name='firstname' class='form-control' required=true placeholder='firstname'>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='row'>
+                        <div class='col-md-5'>
+                            <p>LastName</p>
+                        </div>
+                        <div class='col-md-7'>
+                            <div class='form-group'>
+                                <input type='text' name='lastname' class='form-control' required=true placeholder='lastname'>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='row'>
+                        <div class='col-md-5'>
+                            <p>Email</p>
+                        </div>
+                        <div class='col-md-7'>
+                            <div class='form-group'>
+                                <input type='email' name='emailadd' class='form-control' required=true placeholder='Email address'>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type='submit' class='btn btn-info btn-fill pull-right'>Create</button>
+                    <div class='clearfix'></div>
+                    </form>
+                 </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+
+{% block script %}
+
+    <script type="text/javascript">
+    
+    function successful(report){
+        showNotification('bottom','right','info',report,'pe-7s-check');
+    }
+    
+    function error(report){
+        showNotification('bottom','right','danger',report,'pe-7s-attention');
+    }
+        
+    function showNotification(from,align,color,info,icon){
+        $.notify({
+            icon: icon,
+            message: info
+            
+        },{
+            type: color,
+            timer: 4000,
+            placement: {
+                from: from,
+                align: align
+            }
+        });
+    }
+    
+
+
+    {% if form.errors %}
+        error("Some Invalid Input(s)")
+    {% elif success %}
+        successful("User Created Successfully!!!")
+    {% elif error %} 
+        error("Error verifying Data!!!")
+    {% endif %}                             
+
+    </script>
+
+{% endblock %}
